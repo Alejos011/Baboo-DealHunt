@@ -1,15 +1,25 @@
 require('dotenv').config();
+
+//const express settings
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT;
 const { searchProducts } = require('./SerpAPIService');
+const path = require('path');
 
+//app set
+//EJS settings -> define path
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'Views'));
+
+//app get
+//Query Settings -> get req
 app.get('/search', async (req, res) => 
 {
     const query = req.query.q;
     if (!query) 
     {
-        return res.status(400).send("El parámetro 'q' dentro del query no está especificado");
+        return res.status(400).send("El parámetro query no está especificado");
     }
 
     try 
@@ -25,7 +35,16 @@ app.get('/search', async (req, res) =>
     }
 });
 
+// index path -> render
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
+//app listen port
 app.listen(PORT, () => 
 {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+
+
