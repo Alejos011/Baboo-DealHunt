@@ -35,11 +35,20 @@ app.get('/search', async (req, res) =>
     }
 });
 
-// index path -> render
+/*****VIEWS  RENDERING******/
+
+// default view -> render index
 app.get('/', (req, res) => {
     res.render('index');
 });
 
+// products view -> render products
+app.get('/products', (req, res) => {
+    res.render('products');
+});
+
+
+/*********PORT LISTENING**********/
 //app listen port
 app.listen(PORT, () => 
 {
