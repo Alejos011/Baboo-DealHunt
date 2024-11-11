@@ -22,17 +22,26 @@ async function searchProducts(query)
             } 
             
             else {
+                
+                const queryWords = query.toLowerCase().split(" ");
+
                 const structuredResults = json.shopping_results
-                    .filter(product => product.title.toLowerCase().includes(query.toLowerCase())) // Filtra por query en el título
+                    .filter(product => {
+                        const titleLower = product.title.toLowerCase();
+                        const queryWords = query.toLowerCase().split(" ");
+                        // Verifica que cada palabra del query esté presente en el título
+                        return queryWords.every(word => titleLower.includes(word));
+                    })
                     .map(product => ({
                         title: product.title,
                         link: product.link,
                         price: product.price,
-                        numericPrice: parsePrice(product.price),
+                        numericPrice: parsePrice(product.price), // Nuevo campo para ordenamiento
                         rating: product.rating || "Sin calificación",
                         image: product.thumbnail,
                         reviews: product.reviews || 0,
                         source: product.source,
+                        shipping: product.additional_price?.shipping || "No disponible",
                     }))
                     .sort((a, b) => a.price - b.price); // Ordena por precio de menor a mayor
 
