@@ -24,8 +24,8 @@ app.get('/search', async (req, res) =>
 
     try 
     {
-        const products = await searchProducts(query);
-        res.json(products);
+        const productsGroupedByStore = await searchProducts(query);
+        res.render('products', { groupedItems: productsGroupedByStore });
     } 
     
     catch (error)
@@ -42,10 +42,6 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-// products view -> render products
-app.get('/products', (req, res) => {
-    res.render('products');
-});
 
 
 /*********PORT LISTENING**********/

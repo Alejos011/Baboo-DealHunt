@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados de Búsqueda</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    img {
+      max-width: 100px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Lista de productos</h1>
+  <h1>Resultados de Búsqueda</h1>
 
-    <a href="/"><button>Regresar</button></a>
+  <% for (const [store, products] of Object.entries(groupedItems)) { %>
+    <h2><%= store %></h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Título</th>
+          <th>Enlace</th>
+          <th>Precio</th>
+          <th>Rating</th>
+          <th>Reseñas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach(item => { %>
+          <tr>
+            <td><img src="<%= item.image %>" alt="Imagen de <%= item.title %>"></td>
+            <td><%= item.title %></td>
+            <td><a href="<%= item.link %>" target="_blank">Ver Producto</a></td>
+            <td>$<%= item.price %></td>
+            <td><%= item.rating %></td>
+            <td><%= item.reviews %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+
 </body>
 </html>
