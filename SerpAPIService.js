@@ -36,7 +36,7 @@ async function searchProducts(query)
                         title: product.title,
                         link: product.link,
                         price: product.price,
-                        numericPrice: parsePrice(product.price), // Nuevo campo para ordenamiento
+                        numericPrice: parsePrice(product.price), // Campo para ordenamiento
                         rating: product.rating || "Sin calificación",
                         image: product.thumbnail,
                         reviews: product.reviews || 0,
