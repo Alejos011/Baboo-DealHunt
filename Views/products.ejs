@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/styles/products.css">
 </head>
 <body>
+  
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-left">
@@ -35,15 +36,33 @@
                   <p class="product-title"><%= item.title %></p>
                   <p class="product-price"><%= item.price %></p>
                 </div>
-                <a href="<%= item.link %>" target="_blank" class="product-btn">Ver Producto</a>
+                <a href="/product?q=<%= query %>&title=<%= encodeURIComponent(item.title) %>" class="product-btn">Ver Producto</a>
               </div>
             <% }); %>
           </div>
         </div>
       <% } %>
+
+      <!-- Paginación -->
+      <div class="pagination">
+        <% if (currentPage > 1) { %>
+          <a href="/search?q=<%= query %>&page=<%= currentPage - 1 %>">Anterior</a>
+        <% } %>
+
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="/search?q=<%= query %>&page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+
+        <% if (currentPage < totalPages) { %>
+          <a href="/search?q=<%= query %>&page=<%= currentPage + 1 %>">Siguiente</a>
+        <% } %>
+      </div>
+
     <% } else { %>
       <p>No se encontraron productos para tu búsqueda. Intenta nuevamente.</p>
     <% } %>
   </div>
+
+
 </body>
 </html>

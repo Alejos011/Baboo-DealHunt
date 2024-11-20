@@ -1,11 +1,10 @@
 const { getJson } = require("serpapi");
 
-async function searchProducts(query) 
-{
-    return new Promise((resolve, reject) => 
-    {
+// En SerpAPIService.js
+
+async function searchProducts(query) {
+    return new Promise((resolve, reject) => {
         getJson({
-            
             engine: "google_shopping",
             q: query,
             location: "Ciudad de México, México",
@@ -13,39 +12,30 @@ async function searchProducts(query)
             gl: "mx",
             google_domain: "google.com.mx",
             api_key: process.env.SERP_API_KEY
-        }
-        ,(json) => 
-        {
-            if (json.error)
-            {
+        }, (json) => {
+            if (json.error) {
                 reject(json.error);
-            } 
-            
-            else {
-                
+            } else {
                 const queryWords = query.toLowerCase().split(" ");
 
                 const structuredResults = json.shopping_results
                     .filter(product => {
                         const titleLower = product.title.toLowerCase();
-                        const queryWords = query.toLowerCase().split(" ");
-                        // Verifica que cada palabra del query esté presente en el título
                         return queryWords.every(word => titleLower.includes(word));
                     })
                     .map(product => ({
                         title: product.title,
                         link: product.link,
                         price: product.price,
-                        numericPrice: parsePrice(product.price), // Campo para ordenamiento
+                        numericPrice: parsePrice(product.price), // Precio numérico para ordenar
                         rating: product.rating || "Sin calificación",
                         image: product.thumbnail,
                         reviews: product.reviews || 0,
                         source: product.source,
                         shipping: product.additional_price?.shipping || "No disponible",
-                    }))
-                    .sort((a, b) => a.price - b.price); // Ordena por precio de menor a mayor
+                    }));
 
-                // Agrupa los productos por tienda (source)
+                // Agrupamos los productos por tienda
                 const groupedByStore = structuredResults.reduce((acc, product) => {
                     if (!acc[product.source]) {
                         acc[product.source] = [];
@@ -54,14 +44,31 @@ async function searchProducts(query)
                     return acc;
                 }, {});
 
-                resolve(groupedByStore);
+                // Ordenamos las tiendas por el precio más bajo de sus productos
+                const sortedStores = Object.entries(groupedByStore)
+                    .map(([store, products]) => {
+                        // Obtener el precio mínimo de los productos de esta tienda
+                        const minPrice = Math.min(...products.map(item => item.numericPrice));
+                        return [store, products, minPrice]; // Devolvemos la tienda con su precio mínimo
+                    })
+                    .sort((a, b) => a[2] - b[2]); // Ordenamos por el precio mínimo (índice 2)
+
+                // Ahora reconstruimos el objeto agrupado por tienda con los resultados ordenados
+                const sortedGroupedStores = sortedStores.reduce((acc, [store, products]) => {
+                    acc[store] = products;
+                    return acc;
+                }, {});
+
+                resolve(sortedGroupedStores);
             }
         });
     });
 }
 
 function parsePrice(price) {
+
     return parseFloat(price.replace(/[^0-9.-]+/g, ""));
 }
+
 
 module.exports = { searchProducts };
