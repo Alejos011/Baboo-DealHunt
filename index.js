@@ -1,59 +1,43 @@
 require('dotenv').config();
-
-//const express settings
 const express = require('express');
+const path = require('path');
+const { searchProducts } = require('./SerpAPIService');
+
 const app = express();
 const PORT = process.env.PORT;
-const { searchProducts } = require('./SerpAPIService');
-const path = require('path');
 
-//app set
-//EJS settings -> define path
+// Configuración de vistas y archivos estáticos
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'Views'));
+app.use(express.static(path.join(__dirname, 'public')));
 
-//app get
-//Query Settings -> get req
+// Ruta base (index)
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
+// Ruta para búsqueda
 app.get('/search', async (req, res) => {
     const query = req.query.q;
     if (!query) {
-        return res.status(400).send("El parámetro query no está especificado");
+        return res.render('products', { error: "No se especificó una consulta", groupedItems: null });
     }
 
     try {
         const productsGroupedByStore = await searchProducts(query);
 
-        // Ordena las tiendas en función del precio más bajo
-        const sortedStores = Object.entries(productsGroupedByStore)
-            .sort(([, productsA], [, productsB]) => {
-                const minPriceA = Math.min(...productsA.map(p => p.numericPrice));
-                const minPriceB = Math.min(...productsB.map(p => p.numericPrice));
-                return minPriceA - minPriceB;
-            });
+        if (Object.keys(productsGroupedByStore).length === 0) {
+            return res.render('products', { error: "No se encontraron resultados", groupedItems: null });
+        }
 
-        // Convierte el array ordenado de tiendas en un objeto nuevamente
-        const orderedProductsGroupedByStore = Object.fromEntries(sortedStores);
-
-        res.render('products', { groupedItems: orderedProductsGroupedByStore });
+        res.render('products', { error: null, groupedItems: productsGroupedByStore });
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Error al buscar productos");
+        console.error("Error en la búsqueda:", error.message);
+        res.render('products', { error: "Ocurrió un error al buscar productos", groupedItems: null });
     }
 });
 
-
-/*****VIEWS  RENDERING******/
-
-// default view -> render index
-app.get('/', (req, res) => {
-    res.render('index');
-});
-
-
-
-/*********PORT LISTENING**********/
-//app listen port
-app.listen(PORT, () => 
-{
+// Inicio del servidor
+app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
