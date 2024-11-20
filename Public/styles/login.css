@@ -1,0 +1,118 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f3f4f6;
+        }
+        .container {
+            display: flex;
+            width: 80%;
+            max-width: 1000px;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-section, .info-section {
+            padding: 2rem;
+        }
+        .form-section {
+            flex: 1;
+        }
+        .info-section {
+            flex: 1;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .info-section img {
+            max-width: 80%;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #007bff;
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .remember-me input {
+            margin-right: 0.5rem;
+        }
+        .form-actions {
+            text-align: center;
+        }
+        .form-actions button {
+            width: 100%;
+            padding: 0.8rem;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .form-actions button:hover {
+            background: #0056b3;
+        }
+        .alternate-login {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .alternate-login button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .alternate-login button img {
+            width: 20px;
+            margin-right: 0.5rem;
+        }
+        .alternate-login p {
+            margin-top: 1rem;
+        }
+        .alternate-login a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .alternate-login a:hover {
+            text-decoration: underline;
+        }

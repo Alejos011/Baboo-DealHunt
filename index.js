@@ -90,3 +90,102 @@ app.get('/product', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+
+//manejo de sesiones
+const session = require('express-session');
+const bodyParser = require('body-parser');
+
+// Configuración del body-parser
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configuración de la sesión
+app.use(
+    session({
+        secret: 'tu_secreto', // Cambia esto por un valor seguro
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false }, // Cambiar a `true` si usas HTTPS
+    })
+);
+
+
+//LOGIN & REGISTER
+
+const bcrypt = require('bcrypt');
+const db = require('./Models/DB'); // Conexión a la base de datos
+
+// Ruta para mostrar el formulario de registro
+app.get('/register', (req, res) => {
+    res.render('register', { error: null });
+});
+
+// Ruta para procesar el registro
+app.post('/register', async (req, res) => {
+    const { email, password, name } = req.body;
+    if (!email || !password || !name) {
+        return res.render('register', { error: 'Todos los campos son obligatorios' });
+    }
+
+    try {
+        const [existingUser] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (existingUser.length > 0) {
+            return res.render('register', { error: 'El correo ya está registrado' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await db.query('INSERT INTO users (email, password_hash, name, created_at) VALUES (?, ?, ?, NOW())', [
+            email,
+            hashedPassword,
+            name,
+        ]);
+
+        res.redirect('/login');
+    } catch (error) {
+        console.error(error);
+        res.render('register', { error: 'Error al registrar el usuario' });
+    }
+});
+
+// Ruta para mostrar el formulario de inicio de sesión
+app.get('/login', (req, res) => {
+    res.render('login', { error: null });
+});
+
+// Ruta para procesar el inicio de sesión
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.render('login', { error: 'Todos los campos son obligatorios' });
+    }
+
+    try {
+        const [user] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (user.length === 0) {
+            return res.render('login', { error: 'Correo o contraseña incorrectos' });
+        }
+
+        const isMatch = await bcrypt.compare(password, user[0].password_hash);
+        if (!isMatch) {
+            return res.render('login', { error: 'Correo o contraseña incorrectos' });
+        }
+
+        req.session.user = {
+            id: user[0].user_id,
+            name: user[0].name,
+        };
+
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.render('login', { error: 'Error al iniciar sesión' });
+    }
+});
+
+// Ruta para cerrar sesión
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
+    });
+});
+
