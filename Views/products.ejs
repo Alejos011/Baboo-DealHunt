@@ -3,53 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resultados de Búsqueda</title>
-  <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-    th, td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    img {
-      max-width: 100px;
-    }
-  </style>
+  <title>Resultados de Búsqueda - Baboo DealHunt</title>
+  <link rel="stylesheet" href="/styles/products.css">
 </head>
 <body>
-  <h1>Resultados de Búsqueda</h1>
+  
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <img src="images/LOGO.jpeg" alt="Logo" class="logo">
+      <a href="/" class="app-name">Baboo DealHunt</a>
+    </div>
+    <div class="navbar-right">
+      <a href="/">Buscar</a>
+      <a href="/">DealHunt</a>
+      <a href="/tracking">Tracking</a>
+      <a href="/login">Login/Sign-Up</a>
+    </div>
+  </nav>
 
-  <% for (const [store, products] of Object.entries(groupedItems)) { %>
-    <h2><%= store %></h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Imagen</th>
-          <th>Título</th>
-          <th>Enlace</th>
-          <th>Precio</th>
-          <th>Rating</th>
-          <th>Reseñas</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% products.forEach(item => { %>
-          <tr>
-            <td><img src="<%= item.image %>" alt="Imagen de <%= item.title %>"></td>
-            <td><%= item.title %></td>
-            <td><a href="<%= item.link %>" target="_blank">Ver Producto</a></td>
-            <td>$<%= item.price %></td>
-            <td><%= item.rating %></td>
-            <td><%= item.reviews %></td>
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
-  <% } %>
+  <!-- Resultados -->
+  <div class="results-container">
+    <% if (groupedItems && Object.keys(groupedItems).length > 0) { %>
+      <% for (const [store, products] of Object.entries(groupedItems)) { %>
+        <div class="store-row">
+          <h2 class="store-name"><%= store %></h2>
+          <div class="products-row">
+            <% products.forEach(item => { %>
+              <div class="product-card">
+                <img src="<%= item.image %>" alt="<%= item.title %>" class="product-image">
+                <div class="product-info">
+                  <p class="product-title"><%= item.title %></p>
+                  <p class="product-price"><%= item.price %></p>
+                </div>
+                <a href="/product?q=<%= query %>&title=<%= encodeURIComponent(item.title) %>" class="product-btn">Ver Producto</a>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- Paginación -->
+      <div class="pagination">
+        <% if (currentPage > 1) { %>
+          <a href="/search?q=<%= query %>&page=<%= currentPage - 1 %>">Anterior</a>
+        <% } %>
+
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="/search?q=<%= query %>&page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+
+        <% if (currentPage < totalPages) { %>
+          <a href="/search?q=<%= query %>&page=<%= currentPage + 1 %>">Siguiente</a>
+        <% } %>
+      </div>
+
+    <% } else { %>
+      <p>No se encontraron productos para tu búsqueda. Intenta nuevamente.</p>
+    <% } %>
+  </div>
+
 
 </body>
 </html>

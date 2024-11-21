@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto - Baboo DealHunt</title>
+    <link rel="stylesheet" href="/styles/product.css">
+</head>
+<body>
+    
+    <!-- Navbar -->
+    <nav>
+        <div class="navbar-left">
+            <img src="images/LOGO.jpeg" alt="Logo Baboo" class="logo">
+            <a href="/" class="app-name">Baboo DealHunt</a>
+        </div>
+        <div class="navbar-right">
+            <a href="/">Buscar</a>
+            <a href="">DealtHunt</a>
+            <a href="/tracking">Tracking</a>
+            <a href="/login">Login/Sign-Up</a>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="product-container">
+        <% if (error) { %>
+            <p class="error-message"><%= error %></p>
+        <% } else { %>
+            <div class="product-header">
+                <img src="<%= product.image %>" alt="<%= product.title %>" class="product-image">
+                <div class="product-info">
+                    <h1 class="product-title"><%= product.title %></h1>
+                    <p class="product-price" style="color: red; font-size: 1.5em;">Precio: <%= product.price %></p>
+                </div>
+            </div>
+
+            <div class="product-details">
+                <h2>Descripción y Especificaciones</h2>
+                <table>
+                    <tr>
+                        <td>Calificación:</td>
+                        <td><%= product.rating %></td>
+                    </tr>
+                    <tr>
+                        <td>Reseñas:</td>
+                        <td><%= product.reviews %></td>
+                    </tr>
+                    <tr>
+                        <td>Envío:</td>
+                        <td><%= product.shipping %></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="product-tracking">
+                <button id="track-btn" class="track-btn">Rastrear Producto</button>
+                <a href="<%= product.link %>" target="_blank" class="product-btn">Visitar tienda</a>
+                <p id="track-message" style="display: none;">
+                    El producto se ha comenzado a rastrear. Te avisaremos cuando baje de precio.
+                    <a href="/configure-notifications" class="configure-link">Configurar notificaciones</a>
+                </p>
+            </div>
+            
+        <% } %>
+    </div>
+
+    <script>
+        const trackBtn = document.getElementById('track-btn');
+        const trackMessage = document.getElementById('track-message');
+
+        trackBtn.addEventListener('click', () => {
+            trackMessage.style.display = 'block';
+            trackBtn.disabled = true;
+            trackBtn.innerText = 'Producto en seguimiento';
+        });
+    </script>
+</body>
+</html>
+
+

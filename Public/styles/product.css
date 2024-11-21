@@ -1,0 +1,158 @@
+body {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+/* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #2a2a2a;
+    color: #fff;
+}
+
+.navbar-left, .navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-left .logo {
+    height: 50px;
+    margin-right: 10px;
+}
+
+.navbar-right a, .navbar-left .app-name {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 30px;
+}
+
+.navbar-right a:hover {
+    text-decoration: underline;
+}
+
+.product-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.product-header {
+    display: flex;
+    gap: 20px;
+}
+
+.product-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-details {
+    margin-top: 20px;
+}
+
+.product-details table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.product-details table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+.product-tracking {
+    margin-top: 20px;
+}
+
+
+.track-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.go-btn{
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.track-btn:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+
+
+.product-btn {
+    background-color: #ff5722; /* Color naranja */
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+/* Contenedor de los botones */
+.action-buttons {
+    display: flex;
+    justify-content: space-between; /* Botones en extremos opuestos */
+    align-items: center; /* Alinear verticalmente */
+    margin-top: 16px;
+}
+
+/* Botón "Rastrear producto" */
+.track-btn {
+    background-color: #4caf50; /* Color verde */
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.track-btn:hover {
+    background-color: #43a047;
+}
+
+/* Botón "Visitar tienda" */
+.product-btn {
+    background-color: #ff5722; /* Color naranja */
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.product-btn:hover {
+    background-color: #e64a19;
+}

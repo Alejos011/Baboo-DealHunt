@@ -3,15 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baboo Deal Hunt</title>
-</head>
+    <title>Baboo DealHunt</title>
+    <link rel="stylesheet" href="styles/index.css">
 <body>
-    <h1>Busca los productos de tu preferencia</h1>
-    <form action="/search" method="get">
-        <input type="text" name="q" placeholder="Busca productos...">
-        <button type="submit">Buscar</button>
-    </form>
+    <nav>
+        <div class="navbar-left">
+            <img src="images/LOGO.jpeg" alt="Logo Baboo" class="logo">
+            <a href="/" class="app-name">Baboo DealHunt</a>
+        </div>
+        <div class="navbar-right">
+            <a href="/">Buscar</a>
+            <a href="">DealtHunt</a>
+            <a href="/tracking">Tracking</a>
+            <a href="/login">Login/Sign-Up</a>
+        </div>
+    </nav>
 
+    <main class="index-main">
+        <h1>Encuentra los mejores precios con Baboo DealHunt</h1>
+        <form action="/search" method="get" class="search-form">
+            <input type="text" name="q" placeholder="Busca productos..." required>
+            <button type="submit">Buscar</button>
+        </form>
+    </main>
+
+    <div class="background-container">
+        <img src="images/BgImage.png" class="Bg-Image">
+    </div>
 </body>
 </html>
 
