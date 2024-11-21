@@ -6,6 +6,12 @@ const { searchProducts } = require('./SerpAPIService');
 const app = express();
 const PORT = process.env.PORT;
 
+function isAuthenticated(req, res, next) {
+    if (req.session.user) {
+        return next(); // El usuario está logueado, continua con la siguiente ruta
+    }
+    res.redirect('/login'); // Si no está logueado, redirige al login
+}
 
 // Configuración de vistas y archivos estáticos
 app.set('view engine', 'ejs');
@@ -16,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.render('index');
 });
+
 
 
 // ++++++++++++++++++++++++++BUSQUEDAS+++++++++++++++++++++++++++++++
@@ -201,5 +208,22 @@ app.get('/logout', (req, res) => {
     req.session.destroy(() => {
         res.redirect('/');
     });
+});
+
+
+
+// Ruta para tracking que solo debe estar disponible para usuarios logueados
+app.get('/tracking', isAuthenticated, (req, res) => {
+    // Aquí puedes mostrar la vista de tracking o la lógica que desees
+    res.render('tracking', { user: req.session.user }); 
+    console.log(req.session.user);
+});
+
+
+// Ruta para tracking que solo debe estar disponible para usuarios logueados
+app.get('/dealhunt', isAuthenticated, (req, res) => {
+    // Aquí puedes mostrar la vista de tracking o la lógica que desees
+    res.render('dealhunt', { user: req.session.user }); 
+    console.log(req.session.user);
 });
 
