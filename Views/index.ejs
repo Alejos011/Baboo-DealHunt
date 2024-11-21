@@ -13,9 +13,17 @@
         </div>
         <div class="navbar-right">
             <a href="/">Buscar</a>
-            <a href="/dealhunt">DealtHunt</a>
+            <a href="/dealhunt">DealHunt</a>
+
             <a href="/tracking">Tracking</a>
-            <a href="/login">Login/Sign-Up</a>
+            
+            <% if (user) { %> <!-- Si el usuario está logueado -->
+                <span style="margin-left: 5%; font-style: oblique;"><%= user.name %></span>
+                <a href="/logout">Cerrar sesión</a>
+                
+            <% } else { %>
+                <a href="/login">Login/Sign-Up</a>
+            <% } %>
         </div>
     </nav>
 

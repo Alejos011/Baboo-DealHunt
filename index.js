@@ -13,6 +13,24 @@ function isAuthenticated(req, res, next) {
     res.redirect('/login'); // Si no está logueado, redirige al login
 }
 
+//manejo de sesiones
+const session = require('express-session');
+const bodyParser = require('body-parser');
+
+// Configuración del body-parser
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configuración de la sesión
+app.use(
+    session({
+        secret: 'tu_secreto', // Cambia esto por un valor seguro
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false }, // Cambiar a `true` si usas HTTPS
+    })
+);
+
+
 // Configuración de vistas y archivos estáticos
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'Views'));
@@ -20,14 +38,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta base (index)
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', {user: req.session.user});
 });
 
 
 
 // ++++++++++++++++++++++++++BUSQUEDAS+++++++++++++++++++++++++++++++
 // Ruta para búsqueda
-app.get('/search', async (req, res) => {
+app.get('/search',  async (req, res) => {
     const query = req.query.q;
     const page = parseInt(req.query.page) || 1; // Página actual (por defecto la 1)
     const itemsPerPage = 5; // Número de tiendas por página
@@ -106,22 +124,6 @@ app.listen(PORT, () => {
 });
 
 
-//manejo de sesiones
-const session = require('express-session');
-const bodyParser = require('body-parser');
-
-// Configuración del body-parser
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Configuración de la sesión
-app.use(
-    session({
-        secret: 'tu_secreto', // Cambia esto por un valor seguro
-        resave: false,
-        saveUninitialized: true,
-        cookie: { secure: false }, // Cambiar a `true` si usas HTTPS
-    })
-);
 
 
 //*******************LOGIN & REGISTER******************************
@@ -216,7 +218,7 @@ app.get('/logout', (req, res) => {
 app.get('/tracking', isAuthenticated, (req, res) => {
     // Aquí puedes mostrar la vista de tracking o la lógica que desees
     res.render('tracking', { user: req.session.user }); 
-    console.log(req.session.user);
+
 });
 
 
@@ -224,6 +226,6 @@ app.get('/tracking', isAuthenticated, (req, res) => {
 app.get('/dealhunt', isAuthenticated, (req, res) => {
     // Aquí puedes mostrar la vista de tracking o la lógica que desees
     res.render('dealhunt', { user: req.session.user }); 
-    console.log(req.session.user);
+
 });
 
