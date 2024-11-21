@@ -6,6 +6,7 @@ const { searchProducts } = require('./SerpAPIService');
 const app = express();
 const PORT = process.env.PORT;
 
+
 // Configuración de vistas y archivos estáticos
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'Views'));
@@ -16,6 +17,8 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+
+// ++++++++++++++++++++++++++BUSQUEDAS+++++++++++++++++++++++++++++++
 // Ruta para búsqueda
 app.get('/search', async (req, res) => {
     const query = req.query.q;
@@ -58,6 +61,9 @@ app.get('/search', async (req, res) => {
     }
 });
 
+
+//********************PRODUCTOS ESPECIFICOS**********************
+//Mostrar producto
 app.get('/product', async (req, res) => {
     const query = req.query.q; // Query original para buscar el producto
     const title = req.query.title; // Título del producto
@@ -86,6 +92,7 @@ app.get('/product', async (req, res) => {
     }
 });
 
+//********************INICIO DEL SERVIDOR*******************
 // Inicio del servidor
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
@@ -110,7 +117,7 @@ app.use(
 );
 
 
-//LOGIN & REGISTER
+//*******************LOGIN & REGISTER******************************
 
 const bcrypt = require('bcrypt');
 const db = require('./Models/DB'); // Conexión a la base de datos
@@ -128,11 +135,13 @@ app.post('/register', async (req, res) => {
     }
 
     try {
+        //Verificar si existe el usuario
         const [existingUser] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
         if (existingUser.length > 0) {
             return res.render('register', { error: 'El correo ya está registrado' });
         }
 
+        //Hashear la contraseña
         const hashedPassword = await bcrypt.hash(password, 10);
         await db.query('INSERT INTO users (email, password_hash, name, created_at) VALUES (?, ?, ?, NOW())', [
             email,
@@ -152,8 +161,11 @@ app.get('/login', (req, res) => {
     res.render('login', { error: null });
 });
 
+
+
 // Ruta para procesar el inicio de sesión
-app.post('/login', async (req, res) => {
+app.post('/login', 
+    async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
         return res.render('login', { error: 'Todos los campos son obligatorios' });
@@ -182,6 +194,8 @@ app.post('/login', async (req, res) => {
     }
 });
 
+
+//************LOGOUT*************
 // Ruta para cerrar sesión
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
