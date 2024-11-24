@@ -1,0 +1,15 @@
+<h1>Tracking de precios</h1>
+<% if (trackings && trackings.length > 0) { %>
+    <ul>
+        <% trackings.forEach(tracking => { %>
+            <li>
+                <strong><%= tracking.query %></strong><br>
+                Precio actual: <%= tracking.price %><br>
+                Fecha de inicio: <%= tracking.tracking_start_date %><br>
+                <button>Ver detalles</button>
+            </li>
+        <% }); %>
+    </ul>
+<% } else { %>
+    <p>No tienes productos rastreados en este momento.</p>
+<% } %>

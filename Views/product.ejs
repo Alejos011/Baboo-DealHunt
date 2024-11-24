@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script src="../product.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Producto - Baboo DealHunt</title>
@@ -65,16 +67,6 @@
         <% } %>
     </div>
 
-    <script>
-        const trackBtn = document.getElementById('track-btn');
-        const trackMessage = document.getElementById('track-message');
-
-        trackBtn.addEventListener('click', () => {
-            trackMessage.style.display = 'block';
-            trackBtn.disabled = true;
-            trackBtn.innerText = 'Producto en seguimiento';
-        });
-    </script>
 </body>
 </html>
 
