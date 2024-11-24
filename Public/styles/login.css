@@ -1,11 +1,40 @@
+/* Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #2a2a2a;
+    color: #fff;
+}
 
+.navbar-left, .navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-left .logo {
+    height: 50px;
+    margin-right: 10px;
+}
+
+.navbar-right a, .navbar-left .app-name {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 30px;
+}
+
+.navbar-right a:hover {
+    text-decoration: underline;
+}
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-        body {
+
+        .supercontainer{
             display: flex;
             justify-content: center;
             align-items: center;
